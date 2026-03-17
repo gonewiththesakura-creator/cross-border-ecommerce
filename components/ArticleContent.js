@@ -1,5 +1,14 @@
 import React from 'react'
 
+function renderImage(src, alt, key) {
+  return (
+    <figure key={key} className="my-10">
+      <img src={src} alt={alt} className="w-full rounded-[24px] border border-black/[0.06] shadow-[0_12px_30px_rgba(15,23,42,0.05)]" />
+      <figcaption className="mt-3 text-center text-sm text-slate-500">{alt}</figcaption>
+    </figure>
+  )
+}
+
 export default function ArticleContent({ content }) {
   if (!content) return <div className="text-slate-500">内容整理中。</div>
 
@@ -34,12 +43,23 @@ export default function ArticleContent({ content }) {
       elements.push(<div key={elements.length} className="h-3" />)
       continue
     }
+    if (line.startsWith('![')) {
+      const match = line.match(/^!\[(.*?)\]\((.*?)\)$/)
+      if (match) {
+        elements.push(renderImage(match[2], match[1], elements.length))
+        continue
+      }
+    }
     if (line.startsWith('## ')) {
       elements.push(<h2 key={elements.length} className="mt-16 mb-6 text-3xl font-semibold tracking-tight text-slate-950 md:text-[2.15rem]">{line.slice(3)}</h2>)
       continue
     }
     if (line.startsWith('### ')) {
       elements.push(<h3 key={elements.length} className="mt-12 mb-5 text-2xl font-semibold tracking-tight text-slate-950">{line.slice(4)}</h3>)
+      continue
+    }
+    if (line.startsWith('#### ')) {
+      elements.push(<h4 key={elements.length} className="mt-8 mb-4 text-xl font-semibold tracking-tight text-slate-900">{line.slice(5)}</h4>)
       continue
     }
     if (/^\d+\.\s/.test(line)) {
