@@ -24,44 +24,50 @@ export default function ArticlePage({ slug, articleSlug }) {
       </header>
 
       <main className="container py-12">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
-          <div>
-            <img src={section.cover} alt={section.title} className="h-64 w-full rounded-[30px] border border-black/[0.06] object-cover shadow-[0_18px_40px_rgba(15,23,42,0.06)] md:h-80" />
-            <article className="soft-card mt-8 p-7 md:p-12">
-              <div className="text-sm text-slate-500">{section.title}</div>
-              <h1 className="mt-3 max-w-4xl text-4xl font-semibold leading-tight md:text-5xl">{article.title}</h1>
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{article.excerpt}</p>
-              <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-500">
+        <div className="mx-auto max-w-6xl">
+          <img src={section.cover} alt={section.title} className="h-64 w-full rounded-[32px] border border-black/[0.06] object-cover shadow-[0_18px_40px_rgba(15,23,42,0.06)] md:h-96" />
+
+          <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+            <article className="soft-card p-8 md:p-12">
+              <div className="text-sm uppercase tracking-[0.18em] text-slate-500">{section.title}</div>
+              <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-[1.08] md:text-6xl">{article.title}</h1>
+              <p className="mt-6 max-w-3xl text-xl leading-9 text-slate-600">{article.excerpt}</p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-slate-500">
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4" /> {article.date}</span>
                 <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4" /> {article.readTime} 分钟阅读</span>
                 <span className="pill">{article.difficulty}</span>
               </div>
-              <div className="mt-5 flex flex-wrap gap-2">{article.tags.map((tag) => <span key={tag} className="pill">#{tag}</span>)}</div>
-              <div className="mt-10 rounded-[28px] border border-black/[0.06] bg-[#fbfbfd] px-6 py-8 md:px-10 md:py-10">
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {article.tags.map((tag) => <span key={tag} className="pill">#{tag}</span>)}
+              </div>
+
+              <div className="mt-12 rounded-[32px] border border-black/[0.06] bg-[#fbfbfd] px-7 py-8 md:px-12 md:py-12">
                 <ArticleContent content={getArticleContent(slug, articleSlug)} />
               </div>
             </article>
-          </div>
 
-          <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-            <div className="soft-card p-6">
-              <div className="text-sm text-slate-500">栏目说明</div>
-              <div className="mt-2 text-2xl font-semibold">{section.title}</div>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{section.description}</p>
-            </div>
-            <div className="soft-card p-6">
-              <div className="text-sm font-medium">相关文章</div>
-              <div className="mt-4 space-y-4">
-                {related.length ? related.map((item) => (
-                  <Link key={`${item.section}-${item.slug}`} href={`/${item.section}/${item.slug}`} className="block rounded-2xl border border-black/[0.06] bg-[#fbfbfd] p-4 hover:bg-white">
-                    <div className="text-xs text-slate-500">{sections[item.section].title}</div>
-                    <div className="mt-1 text-sm font-medium text-slate-900">{item.title}</div>
-                    <div className="mt-2 text-xs text-slate-500">{item.readTime} min</div>
-                  </Link>
-                )) : <div className="text-sm text-slate-500">暂时没有更相关的文章。</div>}
+            <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+              <div className="soft-card p-6">
+                <div className="text-sm uppercase tracking-[0.16em] text-slate-500">About</div>
+                <div className="mt-3 text-2xl font-semibold">{section.title}</div>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{section.description}</p>
               </div>
-            </div>
-          </aside>
+              <div className="soft-card p-6">
+                <div className="text-sm uppercase tracking-[0.16em] text-slate-500">Related</div>
+                <div className="mt-4 space-y-4">
+                  {related.length ? related.map((item) => (
+                    <Link key={`${item.section}-${item.slug}`} href={`/${item.section}/${item.slug}`} className="block rounded-[20px] border border-black/[0.06] bg-[#fbfbfd] p-4 transition hover:bg-white hover:shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+                      <div className="text-xs text-slate-500">{sections[item.section].title}</div>
+                      <div className="mt-2 text-[15px] font-medium leading-6 text-slate-900">{item.title}</div>
+                      <div className="mt-2 text-xs text-slate-500">{item.readTime} min</div>
+                    </Link>
+                  )) : <div className="text-sm text-slate-500">暂时没有更相关的文章。</div>}
+                </div>
+              </div>
+            </aside>
+          </div>
         </div>
       </main>
     </div>

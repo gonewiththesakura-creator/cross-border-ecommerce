@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { articles, sections, getSectionArticles } from '@/lib/siteData'
 
+const featured = articles.slice(0, 3)
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-slate-900">
@@ -19,15 +21,15 @@ export default function Home() {
 
       <main>
         <section className="container py-20 md:py-28">
-          <div className="mx-auto max-w-4xl text-center">
-            <div className="pill mb-6">跨境电商知识库 · 极简内容体验</div>
-            <h1 className="text-5xl font-semibold leading-[1.05] md:text-7xl">
-              更克制的设计，
+          <div className="mx-auto max-w-5xl text-center">
+            <div className="pill mb-6">跨境电商知识库 · 高完成度内容产品</div>
+            <h1 className="text-5xl font-semibold leading-[1.02] md:text-7xl">
+              让内容像产品，
               <br />
-              更清晰的内容。
+              而不是像资料堆。
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-xl">
-              聚焦 TikTok 运营、独立站运营与网络搭建。减少噪音，把阅读体验和信息结构放在第一位。
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-600 md:text-xl">
+              围绕 TikTok 运营、独立站运营与网络搭建，建立一套更清晰、更耐读、更有完成度的跨境知识体系。
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <Link href="/tiktok-marketing" className="btn-primary">开始阅读</Link>
@@ -36,12 +38,53 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="container pb-12">
+          <div className="grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
+            <div className="soft-card p-8 md:p-10">
+              <div className="text-sm uppercase tracking-[0.18em] text-slate-500">Featured</div>
+              <h2 className="mt-3 text-3xl font-semibold md:text-4xl">本周重点阅读</h2>
+              <div className="mt-8 space-y-5">
+                {featured.map((item, index) => (
+                  <Link key={`${item.section}-${item.slug}`} href={`/${item.section}/${item.slug}`} className="block rounded-[24px] border border-black/[0.06] bg-[#fbfbfd] p-5 transition hover:bg-white hover:shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
+                    <div className="flex items-center justify-between text-xs uppercase tracking-[0.15em] text-slate-400">
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <span>{sections[item.section].title}</span>
+                    </div>
+                    <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-slate-600">{item.excerpt}</p>
+                    <div className="mt-4 text-sm text-slate-400">{item.readTime} min read</div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="soft-card p-8 md:p-10">
+              <div className="text-sm uppercase tracking-[0.18em] text-slate-500">Overview</div>
+              <h2 className="mt-3 text-3xl font-semibold">三大板块</h2>
+              <div className="mt-8 space-y-4">
+                {Object.values(sections).map((section) => {
+                  const items = getSectionArticles(section.slug)
+                  return (
+                    <Link key={section.slug} href={`/${section.slug}`} className="block rounded-[24px] border border-black/[0.06] bg-[#fbfbfd] p-5 transition hover:bg-white hover:shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-slate-500">{section.icon} {section.title}</div>
+                        <div className="text-xs text-slate-400">{items.length} 篇</div>
+                      </div>
+                      <div className="mt-3 text-lg font-medium">{section.description}</div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="container pb-16">
           <div className="soft-card p-6 md:p-8">
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <div className="text-sm uppercase tracking-[0.18em] text-slate-500">Overview</div>
-                <h2 className="mt-2 text-3xl font-semibold">三大内容板块</h2>
+                <div className="text-sm uppercase tracking-[0.18em] text-slate-500">Sections</div>
+                <h2 className="mt-2 text-3xl font-semibold">按专题进入</h2>
               </div>
               <div className="text-sm text-slate-500">当前已上线 {articles.length} 篇文章</div>
             </div>
