@@ -84,24 +84,15 @@ const sectionConfig = {
   'networking': { title: '网络搭建', icon: '🌐', color: 'from-emerald-500 to-teal-500', bgGradient: 'from-emerald-50 to-teal-50 dark:from-emerald-900/10 dark:to-teal-900/10' }
 }
 
-export async function generateStaticParams() {
-  const params = []
-  for (const section of Object.keys(allArticles)) {
-    for (const article of allArticles[section]) {
-      params.push({
-        slug: section,
-        article: article.slug
-      })
-    }
-  }
-  return params
+export async function getServerSideProps({ params }) {
+  return { props: { slug: params?.slug || null, article: params?.article || null } }
 }
 
-export default function ArticlePage({ params }) {
+export default function ArticlePage({ slug, article }) {
   const router = useRouter()
-  const section = sectionConfig[params.slug]
-  const articles = allArticles[params.slug] || []
-  const currentArticle = articles.find(a => a.slug === params.article)
+  const section = sectionConfig[slug]
+  const articles = allArticles[slug] || []
+  const currentArticle = articles.find(a => a.slug === article)
   
   const [isShareOpen, setIsShareOpen] = useState(false)
   const [relatedArticles, setRelatedArticles] = useState([])
@@ -112,7 +103,7 @@ export default function ArticlePage({ params }) {
       const related = []
       for (const [sec, arts] of Object.entries(allArticles)) {
         for (const art of arts) {
-          if (art.slug !== params.article && sec !== params.slug) {
+          if (art.slug !== article && sec !== slug) {
             const sharedTags = art.tags.filter(tag => currentArticle.tags.includes(tag))
             if (sharedTags.length > 0) {
               related.push({ ...art, section: sec, sectionTitle: sectionConfig[sec].title })
@@ -148,10 +139,10 @@ export default function ArticlePage({ params }) {
   }
 
   const shareOptions = [
-    { name: 'Twitter', url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(currentArticle.title)}&url=${encodeURIComponent(`https://你的域名/${params.slug}/${params.article}`)}` },
-    { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://你的域名/${params.slug}/${params.article}`)}` },
-    { name: 'LinkedIn', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://你的域名/${params.slug}/${params.article}`)}` },
-    { name: 'Copy Link', action: () => { navigator.clipboard.writeText(`https://你的域名/${params.slug}/${params.article}`); setIsShareOpen(false) } }
+    { name: 'Twitter', url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(currentArticle.title)}&url=${encodeURIComponent(`https://你的域名/${slug}/${article}`)}` },
+    { name: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://你的域名/${slug}/${article}`)}` },
+    { name: 'LinkedIn', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://你的域名/${slug}/${article}`)}` },
+    { name: 'Copy Link', action: () => { navigator.clipboard.writeText(`https://你的域名/${slug}/${article}`); setIsShareOpen(false) } }
   ]
 
   return (
@@ -172,7 +163,7 @@ export default function ArticlePage({ params }) {
 
             <div className="flex items-center space-x-3">
               <Link 
-                href={`/${params.slug}`}
+                href={`/${slug}`}
                 className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -195,7 +186,7 @@ export default function ArticlePage({ params }) {
             <nav className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
               <Link href="/" className="hover:text-primary-600 dark:hover:text-primary-400">首页</Link>
               <ChevronRight className="w-4 h-4" />
-              <Link href={`/${params.slug}`} className="hover:text-primary-600 dark:hover:text-primary-400">{section.title}</Link>
+              <Link href={`/${slug}`} className="hover:text-primary-600 dark:hover:text-primary-400">{section?.title || "板块"}</Link>
               <ChevronRight className="w-4 h-4" />
               <span className="text-gray-900 dark:text-white">{currentArticle.title}</span>
             </nav>
@@ -242,7 +233,7 @@ export default function ArticlePage({ params }) {
               <div className="lg:col-span-2">
                 <article className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 md:p-10">
                   <div className="prose prose-lg dark:prose-invert max-w-none">
-                    <ArticleContent content={getArticleContent(params.slug, params.article)} />
+                    <ArticleContent content={getArticleContent(slug, article)} />
                   </div>
                 </article>
 
@@ -276,7 +267,7 @@ export default function ArticlePage({ params }) {
                   </div>
                   
                   <Link
-                    href={`/${params.slug}`}
+                    href={`/${slug}`}
                     className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:underline"
                   >
                     查看 {section.title} 其他课程
@@ -382,7 +373,7 @@ export default function ArticlePage({ params }) {
               <Link href="/" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
                 首页
               </Link>
-              <Link href={`/${params.slug}`} className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+              <Link href={`/${slug}`} className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
                 {section.title}
               </Link>
               <a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
@@ -705,5 +696,5 @@ sudo certbot renew --dry-run
     }
   }
 
-  return contentMap[params.slug]?.[params.article] || '<!-- 内容加载中 -->'
+  return contentMap[section]?.[articleSlug] || '<!-- 内容加载中 -->'
 }

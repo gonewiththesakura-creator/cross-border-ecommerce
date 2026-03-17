@@ -1,7 +1,11 @@
 import Link from 'next/link'
 import { ArrowRight, Clock, Tag, Search, Filter } from 'lucide-react'
 
-export default function SectionPage({ params }) {
+export async function getServerSideProps({ params }) {
+  return { props: { slug: params?.slug || null } }
+}
+
+export default function SectionPage({ slug }) {
   const sections = {
     'tiktok-marketing': {
       title: 'TikTok 运营',
@@ -53,7 +57,7 @@ export default function SectionPage({ params }) {
     }
   }
 
-  const section = sections[params.slug]
+  const section = sections[slug]
 
   if (!section) {
     return (
@@ -130,7 +134,7 @@ export default function SectionPage({ params }) {
               {section.topics.slice(0, 3).map((topic) => (
                 <Link
                   key={topic.slug}
-                  href={`/${params.slug}/${topic.slug}`}
+                  href={`/${slug}/${topic.slug}`}
                   className="inline-flex items-center px-4 py-2 rounded-full bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all group"
                 >
                   <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">
@@ -168,7 +172,7 @@ export default function SectionPage({ params }) {
               return (
                 <Link
                   key={topic.slug}
-                  href={`/${params.slug}/${topic.slug}`}
+                  href={`/${slug}/${topic.slug}`}
                   className="group card p-6 flex flex-col h-full"
                 >
                   <div className="flex items-start justify-between mb-4">
