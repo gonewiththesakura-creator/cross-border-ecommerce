@@ -12,66 +12,53 @@ export default function ArticlePage({ slug, articleSlug }) {
   const section = sections[slug]
   const article = getArticle(slug, articleSlug)
   const related = useMemo(() => (article ? getRelatedArticles(slug, articleSlug, article.tags) : []), [slug, articleSlug, article])
-
-  if (!section || !article) {
-    return <div className="min-h-screen grid place-items-center bg-slate-950 text-white"><Link href="/">返回首页</Link></div>
-  }
+  if (!section || !article) return <div className="min-h-screen grid place-items-center"><Link href="/">返回首页</Link></div>
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,.16),transparent_22%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]" />
-
-      <header className="border-b border-white/10 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div className="min-h-screen bg-[#f5f5f7] text-slate-900">
+      <header className="sticky top-0 z-50 border-b border-black/[0.06] bg-[#f5f5f7]/80 backdrop-blur">
         <div className="container flex h-16 items-center justify-between">
-          <Link href={`/${slug}`} className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white"><ArrowLeft className="h-4 w-4" /> 返回 {section.title}</Link>
-          <Link href="/search" className="text-sm text-slate-400 hover:text-white">搜索</Link>
+          <Link href={`/${slug}`} className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-950"><ArrowLeft className="h-4 w-4" /> 返回 {section.title}</Link>
+          <Link href="/search" className="text-sm text-slate-600 hover:text-slate-950">搜索</Link>
         </div>
       </header>
 
-      <main className="container py-10 lg:py-14">
-        <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-[1fr_300px]">
+      <main className="container py-12">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
           <div>
-            <img src={section.cover} alt={section.title} className="h-64 w-full rounded-[28px] border border-white/10 object-cover shadow-2xl shadow-black/20 md:h-80" />
-
-            <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.04] p-6 md:p-10">
-              <div className="text-sm text-sky-300">{section.title}</div>
-              <h1 className="mt-3 text-4xl font-semibold leading-tight text-white md:text-5xl">{article.title}</h1>
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">{article.excerpt}</p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-400">
+            <img src={section.cover} alt={section.title} className="h-64 w-full rounded-[30px] border border-black/[0.06] object-cover shadow-[0_18px_40px_rgba(15,23,42,0.06)] md:h-80" />
+            <article className="soft-card mt-8 p-7 md:p-12">
+              <div className="text-sm text-slate-500">{section.title}</div>
+              <h1 className="mt-3 max-w-4xl text-4xl font-semibold leading-tight md:text-5xl">{article.title}</h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{article.excerpt}</p>
+              <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-500">
                 <span className="inline-flex items-center gap-2"><Calendar className="h-4 w-4" /> {article.date}</span>
                 <span className="inline-flex items-center gap-2"><Clock className="h-4 w-4" /> {article.readTime} 分钟阅读</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">{article.difficulty}</span>
+                <span className="pill">{article.difficulty}</span>
               </div>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {article.tags.map((tag) => <span key={tag} className="rounded-full bg-white/5 px-3 py-1 text-xs text-slate-300">#{tag}</span>)}
-              </div>
-
-              <div className="article-shell mt-10 rounded-[24px] bg-slate-950/70 p-6 md:p-8">
+              <div className="mt-5 flex flex-wrap gap-2">{article.tags.map((tag) => <span key={tag} className="pill">#{tag}</span>)}</div>
+              <div className="mt-10 rounded-[28px] border border-black/[0.06] bg-[#fbfbfd] px-6 py-8 md:px-10 md:py-10">
                 <ArticleContent content={getArticleContent(slug, articleSlug)} />
               </div>
-            </div>
+            </article>
           </div>
 
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-6">
-              <div className="text-sm text-slate-400">栏目</div>
-              <div className="mt-2 text-2xl font-semibold text-white">{section.title}</div>
-              <p className="mt-3 text-sm leading-7 text-slate-300">{section.description}</p>
-              <Link href={`/${slug}`} className="mt-5 inline-flex text-sm font-medium text-sky-300 hover:text-sky-200">查看全部文章</Link>
+            <div className="soft-card p-6">
+              <div className="text-sm text-slate-500">栏目说明</div>
+              <div className="mt-2 text-2xl font-semibold">{section.title}</div>
+              <p className="mt-3 text-sm leading-7 text-slate-600">{section.description}</p>
             </div>
-
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-6">
-              <div className="text-sm font-medium text-white">相关文章</div>
+            <div className="soft-card p-6">
+              <div className="text-sm font-medium">相关文章</div>
               <div className="mt-4 space-y-4">
                 {related.length ? related.map((item) => (
-                  <Link key={`${item.section}-${item.slug}`} href={`/${item.section}/${item.slug}`} className="block rounded-2xl border border-white/10 bg-black/10 p-4 hover:border-white/20">
-                    <div className="text-xs text-slate-400">{sections[item.section].title}</div>
-                    <div className="mt-1 text-sm font-medium text-white">{item.title}</div>
-                    <div className="mt-2 text-xs text-slate-400">{item.readTime} min</div>
+                  <Link key={`${item.section}-${item.slug}`} href={`/${item.section}/${item.slug}`} className="block rounded-2xl border border-black/[0.06] bg-[#fbfbfd] p-4 hover:bg-white">
+                    <div className="text-xs text-slate-500">{sections[item.section].title}</div>
+                    <div className="mt-1 text-sm font-medium text-slate-900">{item.title}</div>
+                    <div className="mt-2 text-xs text-slate-500">{item.readTime} min</div>
                   </Link>
-                )) : <div className="text-sm text-slate-400">暂时没有更相关的文章。</div>}
+                )) : <div className="text-sm text-slate-500">暂时没有更相关的文章。</div>}
               </div>
             </div>
           </aside>
@@ -230,6 +217,5 @@ SEO 是慢变量，但对独立站是最值钱的长期资产之一。`
 SSL 装完不等于结束，续期和站点资源引用也要一起检查。`
     }
   }
-
   return contentMap[section]?.[articleSlug] || '内容整理中。'
 }
