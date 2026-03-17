@@ -1,0 +1,125 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.header p {
+  margin: 0.25rem 0 0;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+}
+
+.banner h2 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.banner p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.card {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+  background: white;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+.card p {
+  color: #666;
+  margin: 0 0 1rem;
+}
+
+.topics {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.topics li {
+  background: #f5f5f5;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+}
+
+.btn {
+  display: inline-block;
+  background: #0070f3;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.btn:hover {
+  background: #0051a2;
+  text-decoration: none;
+}
+
+.about {
+  background: #f9f9f9;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+.about h2 {
+  margin-top: 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: #666;
+  border-top: 1px solid #eaeaea;
+  margin-top: 3rem;
+}

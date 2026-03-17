@@ -1,0 +1,24 @@
+{
+  "name": "cross-border-ecommerce",
+  "version": "1.0.0",
+  "description": "跨境电商技术学习平台 - TikTok运营、独立站、网络搭建",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "gray-matter": "^4.0.3",
+    "remark": "^15.0.0",
+    "remark-html": "^16.0.0",
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0"
+  }
+}
