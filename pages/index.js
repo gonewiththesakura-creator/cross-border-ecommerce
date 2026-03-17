@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import { Search, X, Clock, Tag, ArrowRight, BookOpen, TrendingUp, Globe, Smartphone, Server } from 'lucide-react'
+import { Search, X, ArrowRight, BookOpen, TrendingUp, Globe, Smartphone, Server } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import ArticleContent from '@/components/ArticleContent'
 
 const sections = {
   'tiktok-marketing': {
