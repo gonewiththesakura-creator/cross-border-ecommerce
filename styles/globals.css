@@ -19,3 +19,11 @@
   .soft-card { @apply rounded-[28px] border border-black/[0.06] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)]; }
   .pill { @apply inline-flex items-center rounded-full border border-black/10 bg-black/[0.03] px-3 py-1 text-xs text-slate-600; }
 }
+
+@keyframes starDrift {
+  0% { transform: translate3d(0,0,0); opacity: .25; }
+  25% { transform: translate3d(var(--dx), calc(var(--dy) * -0.5), 0); opacity: .8; }
+  50% { transform: translate3d(calc(var(--dx) * -0.4), var(--dy), 0); opacity: .35; }
+  75% { transform: translate3d(calc(var(--dx) * 0.5), calc(var(--dy) * 0.3), 0); opacity: .75; }
+  100% { transform: translate3d(0,0,0); opacity: .25; }
+}

@@ -6,6 +6,37 @@ import CursorGlow from '@/components/CursorGlow'
 
 const featured = articles.slice(0, 3)
 
+function SectionCodeCard({ section, items }) {
+  return (
+    <Link href={`/${section.slug}`} className="group block rounded-[28px] border border-black/[0.06] bg-[#fbfbfd] p-5 transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
+      <div className="rounded-[22px] border border-slate-900/90 bg-slate-950 p-4 text-slate-200 shadow-[0_16px_40px_rgba(2,6,23,0.28)]">
+        <div className="mb-4 flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+          <span className="ml-2 text-xs text-slate-500">/{section.slug}</span>
+        </div>
+        <div className="space-y-2 font-mono text-[13px] leading-6">
+          <div><span className="text-sky-300">const</span> section <span className="text-slate-500">=</span> <span className="text-emerald-300">"{section.title}"</span></div>
+          <div><span className="text-sky-300">const</span> articles <span className="text-slate-500">=</span> <span className="text-fuchsia-300">{items.length}</span></div>
+          <div><span className="text-sky-300">const</span> focus <span className="text-slate-500">=</span> <span className="text-slate-300">[</span></div>
+          {items.slice(0, 3).map((item) => (
+            <div key={item.slug} className="pl-4 text-slate-400">"{item.title}"</div>
+          ))}
+          <div><span className="text-slate-300">]</span></div>
+        </div>
+      </div>
+      <div className="mt-5 flex items-center gap-2 text-sm text-slate-500">
+        <span>{section.icon}</span>
+        <span>{section.title}</span>
+      </div>
+      <h3 className="mt-3 text-2xl font-semibold">{section.title}</h3>
+      <p className="mt-3 text-sm leading-7 text-slate-600">{section.description}</p>
+      <div className="mt-5 inline-flex items-center text-sm font-medium text-slate-900">进入专题 <ArrowRight className="ml-2 h-4 w-4" /></div>
+    </Link>
+  )
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-slate-900">
@@ -26,7 +57,7 @@ export default function Home() {
         </header>
 
         <main className="relative z-10">
-          <section className="container py-24 md:py-32">
+          <section className="container pb-24 pt-24 md:pb-32 md:pt-32">
             <div className="mx-auto max-w-6xl text-center">
               <div className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs tracking-[0.18em] text-slate-300 backdrop-blur">CROSS-BORDER ECOMMERCE PLAYBOOK</div>
               <h1 className="mx-auto mt-8 max-w-5xl text-5xl font-semibold leading-[0.98] text-white md:text-7xl lg:text-[5.5rem]">
@@ -44,7 +75,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="container pb-16">
+          <section className="container pb-20">
             <div className="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
               <div className="rounded-[32px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.28)] backdrop-blur md:p-10">
                 <div className="text-sm uppercase tracking-[0.18em] text-slate-400">Featured</div>
@@ -84,10 +115,12 @@ export default function Home() {
               </div>
             </div>
           </section>
+
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#dfe6ef]/55 to-[#f5f5f7]" />
         </main>
       </div>
 
-      <section className="container py-16">
+      <section className="container pb-16 pt-8 md:pt-12">
         <div className="soft-card p-6 md:p-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
@@ -100,28 +133,7 @@ export default function Home() {
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
             {Object.values(sections).map((section) => {
               const items = getSectionArticles(section.slug)
-              return (
-                <div key={section.slug} className="rounded-[28px] border border-black/[0.06] bg-[#fbfbfd] p-5 transition hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
-                  <img src={section.cover} alt={section.title} className="h-44 w-full rounded-[20px] object-cover" />
-                  <div className="mt-5 flex items-center gap-2 text-sm text-slate-500">
-                    <span>{section.icon}</span>
-                    <span>{section.title}</span>
-                  </div>
-                  <h3 className="mt-3 text-2xl font-semibold">{section.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{section.description}</p>
-                  <div className="mt-5 space-y-2 border-t border-black/[0.06] pt-4">
-                    {items.map((item) => (
-                      <Link key={item.slug} href={`/${section.slug}/${item.slug}`} className="flex items-center justify-between rounded-xl px-2 py-2 text-sm text-slate-700 hover:bg-white">
-                        <span>{item.title}</span>
-                        <span className="text-xs text-slate-400">{item.readTime} min</span>
-                      </Link>
-                    ))}
-                  </div>
-                  <Link href={`/${section.slug}`} className="mt-5 inline-flex items-center text-sm font-medium text-slate-900">
-                    查看板块 <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </div>
-              )
+              return <SectionCodeCard key={section.slug} section={section} items={items} />
             })}
           </div>
         </div>
